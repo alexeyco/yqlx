@@ -1,0 +1,25 @@
+run:
+  timeout: 5m
+  tests: true
+  skip-dirs:
+    - example
+
+linters:
+  enable-all: true
+  disable:
+    - exhaustivestruct
+    - exhaustruct
+    - gochecknoglobals
+    - gochecknoinits
+    - nonamedreturns
+    - varnamelen
+    - wrapcheck
+
+linters-settings:
+  gci:
+    sections:
+      - standard
+      - default
+      - prefix(github.com/alexeyco/yqlx)
+    section-separators:
+      - newLine

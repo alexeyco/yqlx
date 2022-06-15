@@ -5,3 +5,12 @@ all:
 .PHONY: install
 install: ## Install dependencies
 	@go mod tidy && go mod vendor && go mod verify
+
+.PHONY: mock
+mock: ## Generate mock files
+	@mockgen -package=codegen_test -source=internal/codegen/validator.go -destination=internal/codegen/validator_mock_test.go
+	@mockgen -package=codegen_test -source=internal/codegen/generator.go -destination=internal/codegen/generator_mock_test.go
+
+.PHONY: lint
+lint: ## Run linter
+	@golangci-lint --exclude-use-default=false run ./...
