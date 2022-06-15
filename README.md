@@ -1,5 +1,10 @@
 # yqlx
 
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/alexeyco/yqlx)](https://pkg.go.dev/github.com/alexeyco/yqlx)
+![test](https://github.com/alexeyco/yqlx/workflows/Test/badge.svg?branch=master)
+[![codecov](https://codecov.io/gh/alexeyco/yqlx/branch/master/graph/badge.svg?token=PV0YARQXFH)](https://codecov.io/gh/alexeyco/yqlx)
+[![Go Report Card](https://goreportcard.com/badge/github.com/alexeyco/yqlx)](https://goreportcard.com/report/github.com/alexeyco/yqlx)
+
 A tool to generate query builder for YDB.
 Work in progress.
 
