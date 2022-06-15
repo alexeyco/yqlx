@@ -1,4 +1,4 @@
-name: Check outdated dependencies
+name: Outdated
 
 on:
   push:
