@@ -25,3 +25,10 @@ func WithWriter(w Writer) Option {
 		g.writer = w
 	}
 }
+
+// WithLogger to set custom Logger.
+func WithLogger(l Logger) Option {
+	return func(g *Generator) {
+		g.logger = l
+	}
+}

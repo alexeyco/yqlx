@@ -15,7 +15,7 @@ func PackageName(s string) (string, error) {
 	}
 
 	packageName := filepath.Base(abs)
-	if packageName == "" || packageName == "/" {
+	if packageName == "" || packageName == string(filepath.Separator) {
 		packageName = "schema"
 	}
 

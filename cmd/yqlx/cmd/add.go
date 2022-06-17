@@ -1,11 +1,10 @@
 package cmd
 
 import (
-	"log"
-
 	"github.com/spf13/cobra"
 
 	"github.com/alexeyco/yqlx/internal/codegen/table"
+	"github.com/alexeyco/yqlx/internal/logx"
 )
 
 // addCmd represents the add command.
@@ -18,8 +17,10 @@ var addCmd = &cobra.Command{
 		tableName := args[0]
 		directory := cmd.Flag("output").Value.String()
 
-		if err := table.Generate(tableName).To(directory); err != nil {
-			log.Fatalln(err)
+		logger := logx.New()
+
+		if err := table.Generate(tableName, table.WithLogger(logger)).To(directory); err != nil {
+			logger.Fatal(err)
 		}
 	},
 }

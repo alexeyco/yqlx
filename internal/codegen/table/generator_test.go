@@ -29,15 +29,24 @@ func TestGenerator_To(t *testing.T) {
 		fsMock := afero.NewMemMapFs()
 		validatorMock := NewMockValidator(ctrl)
 		writerMock := NewMockWriter(ctrl)
+		loggerMock := NewMockLogger(ctrl)
 
 		validatorMock.EXPECT().Validate(fsMock, tableName, directory).Return(nil)
-		writerMock.EXPECT().Write(fsMock, tableName, directory).Return(nil)
+		writerMock.EXPECT().
+			Write(fsMock, tableName, directory, gomock.Any()).
+			DoAndReturn(func(_ afero.Fs, _ string, _ string, fn func(s string)) error {
+				fn("fileName")
+
+				return nil
+			})
+		loggerMock.EXPECT().Infof("Created file %q", "fileName")
 
 		err := table.Generate(
 			tableName,
 			table.WithFs(fsMock),
 			table.WithValidator(validatorMock),
 			table.WithWriter(writerMock),
+			table.WithLogger(loggerMock),
 		).To(directory)
 
 		assert.NoError(t, err)
@@ -51,7 +60,7 @@ func TestGenerator_To(t *testing.T) {
 		writerMock := NewMockWriter(ctrl)
 
 		validatorMock.EXPECT().Validate(fsMock, tableName, directory).Return(nil)
-		writerMock.EXPECT().Write(fsMock, tableName, directory).Return(expectedError)
+		writerMock.EXPECT().Write(fsMock, tableName, directory, gomock.Any()).Return(expectedError)
 
 		err := table.Generate(
 			tableName,

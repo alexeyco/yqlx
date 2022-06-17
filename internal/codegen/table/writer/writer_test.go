@@ -20,15 +20,19 @@ func TestWriter_Write(t *testing.T) {
 		directory = "/path/to/directory"
 	)
 
+	fileName := path.Join(directory, utils.FileName(tableName))
+
 	fsMock := afero.NewMemMapFs()
 
 	err := fsMock.MkdirAll(directory, os.ModePerm)
 	assert.NoError(t, err)
 
-	err = writer.New().Write(fsMock, tableName, directory)
+	err = writer.New().Write(fsMock, tableName, directory, func(s string) {
+		assert.Equal(t, fileName, s)
+	})
 	assert.NoError(t, err)
 
-	fi, err := fsMock.Stat(path.Join(directory, utils.FileName(tableName)))
+	fi, err := fsMock.Stat(fileName)
 
 	assert.NoError(t, err)
 	assert.False(t, fi.IsDir())
