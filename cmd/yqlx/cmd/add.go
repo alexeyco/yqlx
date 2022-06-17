@@ -5,7 +5,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/alexeyco/yqlx/internal/codegen"
+	"github.com/alexeyco/yqlx/internal/codegen/table"
 )
 
 // addCmd represents the add command.
@@ -15,8 +15,10 @@ var addCmd = &cobra.Command{
 	Example: "yqlx add path/to/table -o internal/yqlx/schema",
 	Args:    cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		err := codegen.New().Add(cmd.Flag("output").Value.String(), args[0])
-		if err != nil {
+		tableName := args[0]
+		directory := cmd.Flag("output").Value.String()
+
+		if err := table.Generate(tableName).To(directory); err != nil {
 			log.Fatalln(err)
 		}
 	},
