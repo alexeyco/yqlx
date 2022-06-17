@@ -8,6 +8,40 @@ import (
 	"github.com/alexeyco/yqlx/internal/codegen/table/utils"
 )
 
+var packageNameData = [...]struct {
+	name     string
+	source   string
+	expected string
+}{
+	{
+		name:     "Absolute",
+		source:   "/path/to/directory",
+		expected: "directory",
+	},
+	{
+		name:     "Root",
+		source:   "/",
+		expected: "schema",
+	},
+}
+
+func TestPackageName(t *testing.T) {
+	t.Parallel()
+
+	for _, datum := range packageNameData {
+		datum := datum
+
+		t.Run(datum.name, func(t *testing.T) {
+			t.Parallel()
+
+			actual, err := utils.PackageName(datum.source)
+
+			assert.NoError(t, err)
+			assert.Equal(t, datum.expected, actual)
+		})
+	}
+}
+
 var typeNameData = [...]struct {
 	source   string
 	expected string
