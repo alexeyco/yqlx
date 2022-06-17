@@ -15,6 +15,7 @@ type Generator struct {
 	fs        afero.Fs
 	validator Validator
 	writer    Writer
+	logger    Logger
 }
 
 // Generate returns new Generator.
@@ -43,5 +44,9 @@ func (g *Generator) To(directory string) error {
 		return err
 	}
 
-	return g.writer.Write(g.fs, g.tableName, directory)
+	return g.writer.Write(g.fs, g.tableName, directory, func(fileName string) {
+		if g.logger != nil {
+			g.logger.Infof("Created file %q", fileName)
+		}
+	})
 }
